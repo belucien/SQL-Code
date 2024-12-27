@@ -45,7 +45,7 @@ SELECT *
 FROM duplicate_cte
 WHERE row_num > 1;
 
--- Cross referencing for duplicated using a company
+-- Cross referencing for duplicates using a company
 
 SELECT *
 FROM layoffs_staging
