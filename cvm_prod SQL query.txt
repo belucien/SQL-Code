@@ -1,0 +1,66 @@
+WITH QuestionData AS (
+  SELECT
+    evaluationID,
+    academicYear,
+    dvmYear,
+    courseCode,
+    semester,
+    evaluationTitle,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'VBS course learning goals and objectives were clearly stated in the syllabus.' THEN responseNumValue END) AS `VBS course learning goals and objectives were clearly stated in the syllabus.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Content of the VBS course was appropriately integrated with other curriculum components.' THEN responseNumValue END) AS `Content of the VBS course was appropriately integrated with other curriculum components.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Content of the VBS course met my professional learning expectations.' THEN responseNumValue END) AS `Content of the VBS course met my professional learning expectations.`,  
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Content of the VBS course effectively integrated basic science and clinical science.' THEN responseNumValue END) AS `Content of the VBS course effectively integrated basic science and clinical science.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Student performance assessments fairly reflected VBS course objectives.' THEN responseNumValue END) AS `Student performance assessments fairly reflected VBS course objectives.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'The difficulty level of the VBS course was appropriate for its place in the curriculum.' THEN responseNumValue END) AS `The difficulty level of the VBS course was appropriate for its place in the curriculum.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Faculty supporting the VBS course were responsive to student concerns.' THEN responseNumValue END) AS `Faculty supporting the VBS course were responsive to student concerns.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Faculty supporting the VBS course effectively guided my learning.' THEN responseNumValue END) AS `Faculty supporting the VBS course effectively guided my learning.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'The VBS course helped me improve my critical thinking skills.' THEN responseNumValue END) AS `The VBS course helped me improve my critical thinking skills.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'The VBS course advanced my knowledge of the basic sciences essential to veterinary medicine.' THEN responseNumValue END) AS `The VBS course advanced my knowledge of the basic sciences essential to veterinary medicine.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Content of Grand Rounds effectively integrated basic science and clinical science' THEN responseNumValue END) AS `Content of Grand Rounds effectively integrated basic science and clinical science`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'The BSL experience supported my VBS learning experience.' THEN responseNumValue END) AS `The BSL experience supported my VBS learning experience.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'The MDC experience supported my VBS learning experience.' THEN responseNumValue END) AS `The MDC experience supported my VBS learning experience.`,
+    MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Faculty supporting the MDC appropriately guided my learning.' THEN responseNumValue END) AS `Faculty supporting the MDC appropriately guided my learning.`
+  FROM masterEvaluationElentra
+  WHERE evaluationType = 'Course' AND courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120')
+  GROUP BY evaluationID, academicYear, dvmYear, courseCode, semester, evaluationTitle
+),
+CommentData AS (
+  SELECT
+    evaluationID,
+  MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Provide constructive suggestions for improvement of the BSL activities. Please comment on which topics/activities were most helpful and which were least helpful, which instructors were most/least effective, etc.' THEN responseComment END) AS `Provide constructive suggestions for improvement of the BSL activities.`,
+  MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Provide constructive suggestions for improvement of Grand Rounds. Please comment on which topics/activities were most helpful and which were least helpful, which instructors were most/least effective, etc.' THEN responseComment END) AS `Provide constructive suggestions for improvement of Grand Rounds.`,
+  MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Provide constructive suggestions for improvement of the MDC activities. Please comment on which topics/activities were most helpful and which were least helpful, which instructors were most/least effective, etc.' THEN responseComment END) AS `Provide constructive suggestions for improvement of the MDC activities.`,
+  MAX(CASE WHEN courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120') AND question = 'Provide constructive suggestions for improvement of the VBS course overall. Please comment on which topics/activities were most helpful and which were least helpful, which instructors were most/least effective, etc.' THEN responseComment END) AS `Provide constructive suggestions for improvement of the VBS course overall.`
+  FROM masterEvaluationElentra
+  WHERE evaluationType = 'Course' AND courseCode IN ('CVM 5000-5020', 'CVM 5100-5120', 'CVM 6000-6020', 'CVM 6100-6120')
+  GROUP BY evaluationID
+)
+SELECT
+  QD.evaluationID,
+  QD.academicYear,
+  QD.dvmYear,
+  QD.courseCode,
+  QD.semester,
+  QD.evaluationTitle,
+  QD.`VBS course learning goals and objectives were clearly stated in the syllabus.`,
+  QD.`Content of the VBS course was appropriately integrated with other curriculum components.`,
+  QD.`Content of the VBS course met my professional learning expectations.`,
+  QD.`Content of the VBS course effectively integrated basic science and clinical science.`,
+  QD.`Student performance assessments fairly reflected VBS course objectives.`,
+  QD.`The difficulty level of the VBS course was appropriate for its place in the curriculum.`,
+  QD.`Faculty supporting the VBS course were responsive to student concerns.`,
+  QD.`Faculty supporting the VBS course effectively guided my learning.`,
+  QD.`The VBS course helped me improve my critical thinking skills.`,
+  QD.`The VBS course advanced my knowledge of the basic sciences essential to veterinary medicine.`,
+  QD.`Content of Grand Rounds effectively integrated basic science and clinical science`,
+  QD.`The BSL experience supported my VBS learning experience.`,
+  QD.`The MDC experience supported my VBS learning experience.`,
+  QD.`Faculty supporting the MDC appropriately guided my learning.`,
+  CD.`Provide constructive suggestions for improvement of the BSL activities.`,
+  CD.`Provide constructive suggestions for improvement of Grand Rounds.`,
+  CD.`Provide constructive suggestions for improvement of the MDC activities.`,
+  CD.`Provide constructive suggestions for improvement of the VBS course overall.`
+FROM QuestionData AS QD
+JOIN CommentData AS CD
+ON QD.evaluationID = CD.evaluationID
+ORDER BY QD.courseCode ASC;

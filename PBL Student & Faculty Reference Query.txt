@@ -1,0 +1,27 @@
+-- SQL Query examples that reference student and faculty
+
+-- SQL Query example 1
+
+SELECT *
+FROM masterEvaluationElentra AS Evaluation
+INNER JOIN cvmUsers AS Assessor
+ON Evaluation.assessorID = Assessor.elentraID
+INNER JOIN cvmUsers AS Target
+ON Evaluation.targetID = Target.elentraID
+WHERE Target.lastName = 'McNamara' AND Evaluation.responseComment IS NOT NULL
+
+
+-- SQL Query example 2
+
+SELECT *
+FROM masterEvaluationElentra AS Evaluation
+INNER JOIN (
+  SELECT *
+  FROM cvmUsers
+  WHERE bannerID IN (391160, 353880, 390206, 391790, 391219, 391284)
+) AS Assessor ON Evaluation.assessorID = Assessor.elentraID
+INNER JOIN (
+  SELECT *
+  FROM cvmUsers
+  WHERE lastName = 'McNamara'
+) AS Target ON Evaluation.targetID = Target.elentraID
